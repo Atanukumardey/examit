@@ -49,22 +49,22 @@ const Footer = () => {
   return (
     <FOOTER>
       <LeftText>
-        © 2021 Built and Design by{" "}
-        <a href="https://www.youtube.com/channel/UCeYt6blRBKuNrEg_-282fSA">
-          @CodeBucks
+        © 2023 Built and Design by{" "}
+        <a href="https://www.linkedin.com/in/atanu-kumar-dey-987589190/">
+          @Atanu
         </a>
       </LeftText>
       <RightText>
         Reach out to me via 😉
-        <a href="https://twitter.com/code_bucks">
+        <a href="https://twitter.com/">
           <Image src={Twitter} alt="Twitter" />
         </a>
         &nbsp;
-        <a href="https://www.instagram.com/code.bucks/">
+        <a href="https://www.instagram.com/">
           <Image src={Instagram} alt="Instagram" />
         </a>
         &nbsp;
-        <a href="mailto:codebucks27@gmail.com?subject=Email From Your Website">
+        <a href="mailto:atanukumar251@gmail.com?subject=Email From Your Website">
           <Image src={Gmail} alt="Gmail" />
         </a>
       </RightText>

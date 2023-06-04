@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import styled from "styled-components";
 
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+
 import Capsule from "/public/3dcapsule.png";
 import Cone from "/public/3dtriangle.png";
 import Tube from "/public/3dtube.png";
@@ -320,58 +321,56 @@ const Services = () => {
   return (
     <ServiceSection id="services">
       <Background ref={ref}>
-        <Title className="title">What We Do</Title>
+        <Title className="title">What We Provide</Title>
         <Line id="line" />
         <Triangle id="triangle" />
       </Background>
 
       <Content ref={addToRefs}>
         <TextBlock
-          topic="Design"
-          title={<h1>We build award winning Designs</h1>}
+          topic="Effective"
+          title={<h1>Effective Exam Environment with AI-powered proctoring system</h1>}
           subText={
             <h5>
-              We help clients to build great design to attract more customers
+             Prevent cheating and ensure academic integrity with live proctoring solution
             </h5>
           }
         />
         <OBJ>
           <Image src={Tube} alt="Tube Object" width="400" height="400" />
         </OBJ>
-        <SvgBlock svg="Design.svg" />
+        {/* <SvgBlock svg="Design.svg" /> */}
+        <SvgBlock svg="ImageAsset/EffectiveExam.svg" />
       </Content>
       <Content ref={addToRefs}>
         <TextBlock
-          topic="Develop"
-          title={<h1>We Develope high quality Web & App</h1>}
+          topic="Interactive"
+          title={<h1>Live Location Tracking and Chat with Examiner</h1>}
           subText={
             <h5>
-              We build appropriate solution to develope your website & app with
-              best tools available
+              Provides Examiner full control over Environment.
             </h5>
           }
         />
         <OBJ>
           <Image src={Cone} alt="Cone Object" width="400" height="400" />
         </OBJ>
-        <SvgBlock svg="Develope.svg" />
+        <SvgBlock svg="ImageAsset/InteractiveExam.svg" />
       </Content>
       <Content>
         <TextBlock
-          topic="Support"
-          title={<h1>We provide support for your digital presence</h1>}
+          topic="Productive"
+          title={<h1> 24/7 Exam scheduling brings flexibility, saves time to be productive</h1>}
           subText={
             <h5>
-              Once your system is online, we will stay on hand to help you use
-              it and provide technical support and maintenance <br /> your
-              business
+             Automation breaks the barrier of time and place enabling exam sheduling anytime anywhere
             </h5>
           }
         />
         <OBJ>
           <Image src={Capsule} alt = "Capsul Object" width = "400" height="400"/>
         </OBJ>
-        <SvgBlock svg="Support.svg" />
+        <SvgBlock svg="ImageAsset/ProductiveExam.svg" />
       </Content>
     </ServiceSection>
   );

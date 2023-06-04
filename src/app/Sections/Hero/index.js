@@ -1,13 +1,17 @@
 // This is HeroSection component, Main top section of website
+//"use client"
 
 import styled, { keyframes } from "styled-components";
 
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+
+import Link from "next/link";
 import arrow from "/public/Arrow Right.svg";
+import GirlProblemSolve from "/public/ImageAsset/GirlProblemSolve.svg";
 import purpleBlob from "/public/blob purple.png";
 import whiteBlob from "/public/blob white.png";
 import pinkBlob from "/public/landingpage/blobPink.png";
-import Mobile from "/public/mobile.svg";
 
 const move = keyframes`
 0% { transform: translateY(-5px)  }
@@ -74,8 +78,8 @@ const MainContent = styled.div`
   }
 `;
 
-const MobileSvg = styled.div`
-  max-width: 100%;
+const GirlProblemSolveSvg = styled.div`
+  max-width: 70%;
   width: calc(30% + 20vw);
   height: auto;
   z-index: 7;
@@ -158,7 +162,9 @@ const CTA = styled.button`
   display: flex;
   align-items: center;
   transition: transform 0.2s;
-
+  a:link, a:visited, a:hover, a:active {
+    text-decoration: none;
+  }
   img {
     width: 1.5rem;
   }
@@ -173,7 +179,10 @@ const CTA = styled.button`
   }
 `;
 
-const HeroSection = () => {
+
+
+const HeroSection = (props) => {
+  const router = useRouter();
   return (
     <HomeSection id="home">
       <Blobs>
@@ -192,20 +201,28 @@ const HeroSection = () => {
         <Lb id="leftBlock">
           <Topic>
             <Circle />
-            <span>We Build Web</span>
+            <span>Online Exam</span>
           </Topic>
-          <Title>Transforming your digital presence</Title>
+          <Title>Get the edge with AI powered exams</Title>
           <SubText>
-            we help fast growing companies build award winning websites
+            Online Exam Environment With AI Proctoring and Live Monitoring
           </SubText>
+          {/* onClick = { () => {router.push('/Authentication'); }} */}
           <CTA>
-            Get in touch &nbsp;
+          <Link href='/Authentication' style={{textDecoration:'none', color:'black'}} className=" flex flex-row justify-around">
+           <div className="mr-2">
+            Get Started
+           </div>
+
             <Image  src={arrow} alt="cta" width="100" height="100" />
+            </Link>
           </CTA>
+
+         
         </Lb>
-        <MobileSvg>
-        <Image  src={Mobile} alt="Mobile Svg" width="400" height="400" />
-        </MobileSvg>
+        <GirlProblemSolveSvg>
+        <Image  src={GirlProblemSolve} alt="Mobile Svg" width="200" height="200" />
+        </GirlProblemSolveSvg>
       </MainContent>
     </HomeSection>
   );

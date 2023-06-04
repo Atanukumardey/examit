@@ -1,30 +1,17 @@
-"use client"
-import { GlobalStyle } from "./globalStyles";
+// "use client"
+import "@fortawesome/fontawesome-free/css/all.min.css";
+import { config } from "@fortawesome/fontawesome-svg-core";
+import "@fortawesome/fontawesome-svg-core/styles.css"; // import Font Awesome CSS
+import 'mdb-react-ui-kit/dist/css/mdb.min.css';
+import Home from "./(default)/home/page";
+config.autoAddCss = false; // Tell Font Awesome to skip adding the CSS automatically since it's being imported above
+
 import './globals.css';
-
-import Footer from "@/components/Footer";
-import Header from "@/components/Header";
-import ScrollToTop from "@/components/ScrollToTop";
-import { Suspense } from "react";
-import Home from "./(client)/Home/page";
-
-// const Home = lazy(() => import("./(client)Pages/Home"));
-// const Header = lazy(() => import(""));
-// const Footer = lazy(() => import("./components/Footer/index"));
-// const ScrollToTop = lazy(() => import("./components/ScrollToTop/index"));
 
 
 
 export default function App() {
   return (
-    <Suspense fallback={null}>
-      <GlobalStyle />
-      {/* Hi There! */}
-      <ScrollToTop />
-      <Header />
       <Home />
-      <Footer />
-
-    </Suspense>
   );
 }

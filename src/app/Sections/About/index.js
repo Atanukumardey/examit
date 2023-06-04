@@ -19,7 +19,7 @@ const AboutSection = styled.section`
   justify-content: center;
   align-items: center;
 `;
-const Waves = styled.img`
+const Waves = styled.div`
   width: 100%;
   height: auto;
   position: absolute;
@@ -121,7 +121,9 @@ const AboutText = styled.div`
 const About = () => {
   return (
     <AboutSection id="about">
-      <Waves src={wave} alt="" />
+      <Waves>
+        <Image  src={wave} alt="" />
+      </Waves>
       <Hand>
         <Image  src={hand} alt="" />
       </Hand>
@@ -140,10 +142,9 @@ const About = () => {
             </Human>
 
             <Text>
-              We help our customers to tell about themselves, to grow and stand
-              out in an increasingly competitive digital world, through creative
-              projects that are able to attract and involve, creating strategic
-              value.
+              We help to bring students and examinners closer through inovative 
+              and cutting edge AI powered proctoring system, secured exam environment, and
+              24/7 support. And making exams fair, accurate, and engaging.
             </Text>
             <div>
               <Circle style={{ backgroundColor: "var(--purple)" }} />

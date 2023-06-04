@@ -27,7 +27,7 @@ html{
     body,
     html,
     a {
-        font-family: 'Poppins', sans-serif;
+        font-family: 'Poppins', sans-seri, Roboto, Helvetica, Arial;
             }
     body {
 

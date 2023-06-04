@@ -1,3 +1,4 @@
+// "use client"
 import SvgIcon from "/public/landingpage/arrow-up.svg";
 
 import gsap from "gsap";
