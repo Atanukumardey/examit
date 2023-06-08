@@ -21,7 +21,7 @@ export default function RootLayout({ children }) {
       <meta name="viewport" content="width=device-width, initial-scale=1" />
       <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
       </head>
-      <body className={inter.className} style={{minHeight: "100"}}>
+      <body className={inter.className} style={{minHeight: "100vh"}}>
         {children}
       </body>
     </html>

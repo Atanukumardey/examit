@@ -7,7 +7,7 @@ import Header from '@/components/Header';
 import ScrollToTop from '@/components/ScrollToTop';
 import { MDBSpinner } from 'mdb-react-ui-kit';
 import { Suspense } from 'react';
-import { GlobalStyle2 } from '../globalStyles2';
+import { GlobalStyle2 } from '../../globalStyles2';
 
 const loadingContainer = styled.div`
 	width: 100%;
@@ -55,12 +55,18 @@ const menus = [
 	},
 ];
 
-export default function Examineelayout({ children }) {
+// const [clientLayoutNeedHeader,setClientLayoutNeedHeader] = useState(true);
+export default function Examineelayout({children, LayoutNeedHeader}) {
+	console.log(LayoutNeedHeader);
 	return (
 		<Suspense
 			fallback={
-				<div className=' align-middle'>
-					<MDBSpinner className='' style={{ width: '3rem', height: '3rem' }} role='status'>
+				<div className=' w-screen h-screen flex flex-col justify-items-center'>
+					<MDBSpinner
+						className=''
+						style={{ width: '3rem', height: '3rem' }}
+						role='status'
+					>
 						{/* <span>Loading...</span> */}
 					</MDBSpinner>
 				</div>
@@ -68,11 +74,12 @@ export default function Examineelayout({ children }) {
 		>
 			{<GlobalStyle2 />}
 			<ScrollToTop />
-			<Header menus={menus} />
+
+			{LayoutNeedHeader && <Header menus={menus} />}
 			{/* <ContainerUser> */}
 			{children}
 			{/* </ContainerUser> */}
-			<Footer />
+			{LayoutNeedHeader && <Footer />}
 		</Suspense>
 	);
 }

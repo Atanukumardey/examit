@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { styled } from 'styled-components';
 import swal from 'sweetalert';
-
+import Examineelayout from '../Examineeayout';
 
 const ContainerUser = styled.div`
 	display: flex;
@@ -18,7 +18,7 @@ const ContainerUser = styled.div`
 	height: 100vh;
 `;
 
-export default function Recovery() {
+function ExamLinkPageBody() {
 	const [submitButtonEnable, setSubmitButtonEnable] = useState(true);
 	const [isLoading, setIsLoading] = useState(false);
 	const router = useRouter();
@@ -55,11 +55,11 @@ export default function Recovery() {
 			sessionStorage.setItem('ExamTimeStamp', message.Timestamp);
 
 			// setsessionstorage
-			router.push('/Examinee/Systemcheck');
+			router.push('/Examinee/CameraCheck');
 		} else {
 			swal({
 				title: 'Exam Do not exists',
-				icon: 'error', 
+				icon: 'error',
 				button: 'Try Again',
 			});
 			setSubmitButtonEnable(true);
@@ -118,5 +118,14 @@ export default function Recovery() {
 				{/* Your content goes here */}
 			</MDBContainer>
 		</ContainerUser>
+	);
+}
+
+export default function ExamLink() {
+	return (
+		<Examineelayout
+			children={<ExamLinkPageBody />}
+			LayoutNeedHeader={true}
+		/>
 	);
 }

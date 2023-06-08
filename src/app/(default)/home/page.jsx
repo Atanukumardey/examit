@@ -10,7 +10,6 @@ import { GlobalStyle } from "@/app/globalStyles";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import ScrollToTop from "@/components/ScrollToTop";
-import { useRouter } from "next/navigation";
 import { Suspense } from "react";
 
 
@@ -30,14 +29,13 @@ const menus = [
 ];
 
 function Home() {
-  const router = useRouter();
     return (
       <Suspense fallback={<div> Loading..... </div>}>
           <GlobalStyle/>
           <ScrollToTop/>
           <Header menus={menus}/>
             <Container>
-              <HeroSection router={router} location = {"/Examinee/Home"}/>
+              <HeroSection location = {"/Examinee/Home"}/>
               <About />
               <Services />
               <Testimonials />

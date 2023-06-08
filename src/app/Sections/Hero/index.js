@@ -4,7 +4,6 @@
 import styled, { keyframes } from "styled-components";
 
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 
 import Link from "next/link";
 import arrow from "/public/Arrow Right.svg";
@@ -182,7 +181,6 @@ const CTA = styled.button`
 
 
 const HeroSection = (props) => {
-  const router = useRouter();
   return (
     <HomeSection id="home">
       <Blobs>

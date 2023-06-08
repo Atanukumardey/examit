@@ -5,6 +5,7 @@ import * as tf from '@tensorflow/tfjs';
 import { MDBCard, MDBCardBody } from 'mdb-react-ui-kit';
 import { useEffect, useRef } from 'react';
 import Webcam from 'react-webcam';
+import Examineelayout from '../Examineeayout';
 // import { drawRect } from "./utilities";
 
 
@@ -115,7 +116,7 @@ function OptionCard(props) {
 	);
   }
 
-function ExamPage(){
+  function ExamPageBody(){
 	return (
 		// <MDBContainer fluid className='h-screen'>
 		//   <MDBRow>
@@ -136,6 +137,13 @@ function ExamPage(){
 			</div>
 			{/* <OptionCard item = {DetectionWindow}/> */}
 		</div>
+	  );
+	
+  }
+
+function ExamPage(){
+	return (
+		return (<Examineelayout children={<ExamPageBody/>} LayoutNeedHeader={true}/>);
 	  );
 	
 }
