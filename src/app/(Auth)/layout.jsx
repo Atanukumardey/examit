@@ -6,7 +6,6 @@ import { GlobalStyle } from "@/app/globalStyles";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import ScrollToTop from "@/components/ScrollToTop";
-import { Suspense } from "react";
 
 
 const Containers = styled.div`
@@ -26,7 +25,8 @@ const menus = [
 
 export default function Examineelayout({children}) {
   return (
-    <Suspense fallback={null}>
+    // <Suspense fallback={null}>
+    <>
       {<GlobalStyle/>}
       <ScrollToTop />
       <Header menus={menus}/>
@@ -34,6 +34,7 @@ export default function Examineelayout({children}) {
       {children}
       </Containers>
       <Footer />
-    </Suspense>
+      </>
+    // </Suspense>
   )
 }
