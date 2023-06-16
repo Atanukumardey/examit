@@ -33,13 +33,14 @@ async function checkUniqueUser(inputs) {
 		userTableRef,
 		where(inputs.field, '==', inputs.value)
 	);
+	// console.log(inputs);
 	let users = [];
 	getDocs(getUserByUserNameQuery)
 		.then((snapshot) => {
 			snapshot.docs.forEach((doc) => {
 				users.push({ ...doc.data(), id: doc.id });
 			});
-			console.log(users);
+			// console.log(users);
 			inputs.callback(users);
 		})
 		.catch((err) => {
@@ -100,7 +101,7 @@ async function signIn(data, callbackFunction) {
 			})
 				.then((res) => {
 					// console.log(res);
-					sessionStorage.setItem('UserData', JSON.stringify(res));
+					sessionStorage.setItem('UserData', JSON.stringify(res[0]));
 					// console.log(sessionStorage.getItem('UserData'));
 					callbackFunction(true, 'Done');
 				})
@@ -119,6 +120,11 @@ async function signIn(data, callbackFunction) {
 }
 
 async function userSignOut() {
+	try {
+		localStorage.removeItem('ExamITUserInfo');
+	} catch (err) {
+		console.log(err);
+	}
 	await auth?.signOut();
 }
 
@@ -151,11 +157,11 @@ async function changePassword(code, newPassword, callbackFunction) {
 }
 
 export {
-	checkUniqueUser,
-	signUp,
-	signIn,
-	userSignOut,
-	sendRecoveryPasswordLink,
 	changePassword,
+	checkUniqueUser,
+	sendRecoveryPasswordLink,
+	signIn,
+	signUp,
+	userSignOut
 };
 

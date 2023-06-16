@@ -32,7 +32,7 @@ import {
 	MDBTabsItem,
 	MDBTabsLink,
 	MDBTabsPane,
-	MDBValidationItem
+	MDBValidationItem,
 } from 'mdb-react-ui-kit';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -44,6 +44,7 @@ function LoginSignup() {
 	const [justifyActive, setJustifyActive] = useState('loginTab');
 	const [submitButtonEnable, setSubmitButtonEnable] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
+	const [selectedRememberMe, setSelectedRememberMe] = useState(false);
 
 	const [formInputValidityLabel, setFormInputValidityLabel] = useState({
 		userNameUniqueLabel: 'Username',
@@ -81,7 +82,7 @@ function LoginSignup() {
 			}
 		}
 	}
-	
+
 	useEffect(() => {
 		decideSubmitButtonState();
 	}, [formInputValidityLabel]);
@@ -112,7 +113,7 @@ function LoginSignup() {
 				});
 			} else {
 				checkUniqueUser({
-					field: 'UserName',
+					field: 'userName',
 					value: e.target.value,
 					callback: checkUniqueUserNameFirebaseCallback,
 				});
@@ -219,15 +220,16 @@ function LoginSignup() {
 	function signInUserCallback(state, message) {
 		console.log(message);
 		if (state === true) {
+			if (selectedRememberMe) {
+				const userInitialData = sessionStorage.getItem('UserData');
+				localStorage.setItem('ExamITUserInfo', userInitialData);
+			}
 			swal({
 				title: 'Signin Successfull',
 				icon: 'success',
 				button: 'OK',
-			}).then(() => {
-				setSubmitButtonEnable(true);
-				setIsLoading(false);
-				router.push('/User/Home');
 			});
+			router.push('/User/Home');
 		} else {
 			swal({
 				title: 'Signin Unsuccessfull',
@@ -287,7 +289,8 @@ function LoginSignup() {
 	};
 
 	return (
-		<MDBContainer className='p-3 my-5 d-flex flex-column w-50'>
+		<MDBContainer
+		 className='p-3 my-5 d-flex flex-column w-50'>
 			<MDBTabs
 				pills
 				justify
@@ -335,26 +338,26 @@ function LoginSignup() {
 									/>
 								</div>
 								{/* <MDBIcon fab icon='facebook-f' size="sm"/> */}
-							{/* </MDBBtn> */} 
+							{/* </MDBBtn> */}
 
 							<MDBBtn floating color='secondary' className='mx-1'>
 								{/* <MDBIcon fab icon='google' ></MDBIcon>*/}
 								<Image
-										src={facebookIcon}
-										width={2}
-										height={2}
-										alt={'google Icon'}
-									/> 
+									src={facebookIcon}
+									width={2}
+									height={2}
+									alt={'google Icon'}
+								/>
 							</MDBBtn>
-							
+
 							<MDBBtn floating color='secondary' className='mx-1'>
 								{/* <MDBIcon fab icon='google' ></MDBIcon>*/}
 								<Image
-										src={googleIcon}
-										width={2}
-										height={2}
-										alt={'google Icon'}
-									/> 
+									src={googleIcon}
+									width={2}
+									height={2}
+									alt={'google Icon'}
+								/>
 							</MDBBtn>
 							{/* <MDBBtn
 								tag='a'
@@ -700,9 +703,13 @@ function LoginSignup() {
 
 						<div className='d-flex justify-content-center mb-4'>
 							<MDBCheckbox
+								value={selectedRememberMe}
 								name='loginCheckbox'
 								id='loginCheckBox'
 								label='I have read and agree to the terms'
+								onChange={() => {
+									setSelectedRememberMe(!selectedRememberMe);
+								}}
 							/>
 						</div>
 						{submitButtonEnable ? (

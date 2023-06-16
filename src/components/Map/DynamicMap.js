@@ -15,30 +15,29 @@ const { MapContainer } = ReactLeaflet;
 // const IconImage = require('/public/leaflet/marker-icon.png').default;
 // const ShadowImage = require('/public/leaflet/marker-shadow.png').default;
 
-
 const Map = ({ children, className, width, height, ...rest }) => {
-  let mapClassName = styles.map;
+	let mapClassName = styles.map;
 
-  if ( className ) {
-    mapClassName = `${mapClassName} ${className}`;
-  }
+	if (className) {
+		mapClassName = `${mapClassName} ${className}`;
+	}
 
-  useEffect(() => {
-    (async function init() {
-      delete Leaflet.Icon.Default.prototype._getIconUrl;
-      Leaflet.Icon.Default.mergeOptions({
-        iconRetinaUrl: IconRetinaImage.src,
-        iconUrl: IconImage.src,
-        shadowUrl: ShadowImage.src,
-      });
-    })();
-  }, []);
+	useEffect(() => {
+		(async function init() {
+			delete Leaflet.Icon.Default.prototype._getIconUrl;
+			Leaflet.Icon.Default.mergeOptions({
+				iconRetinaUrl: IconRetinaImage.src,
+				iconUrl: IconImage.src,
+				shadowUrl: ShadowImage.src,
+			});
+		})();
+	}, []);
 
-  return (
-    <MapContainer className={mapClassName} {...rest}>
-      {children(ReactLeaflet, Leaflet)}
-    </MapContainer>
-  )
-}
+	return (
+		<MapContainer className={mapClassName} {...rest}>
+			{children(ReactLeaflet, Leaflet)}
+		</MapContainer>
+	);
+};
 
 export default Map;

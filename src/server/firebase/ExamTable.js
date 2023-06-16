@@ -1,24 +1,28 @@
 import {
-    addDoc,
-    collection,
-    getDocs,
-    query,
-    serverTimestamp,
-    where,
+	addDoc,
+	collection,
+	getDocs,
+	query,
+	serverTimestamp,
+	where,
 } from 'firebase/firestore';
+import { createExamChat } from './ExamChat';
 import { db } from './firebaseApp';
 
 const examTableRef = collection(db, 'Exam');
 
-async function createExam(exam, callbackFunction) {
+async function createExam(userData, exam, callbackFunction) {
+
 	const dateTimeString = `${exam.Date}T${exam.Time}:00`;
+	
 	const timestamp = new Date(dateTimeString).getTime();
 
 	const uniqueExamID = Date.now().toString(36);
 
+	console.log(userData, exam,timestamp);
+
 	addDoc(examTableRef, {
-		ExamOrganizer: 'atanu1234',
-		UserID: '/User/' + '14CBKb9NqDqi8nD2OMZt',
+		ExamOrganizer: userData.userName,
 		Timestamp: timestamp,
 		Duration: exam.Duration,
 		ExamName: exam.ExamName,
@@ -26,10 +30,20 @@ async function createExam(exam, callbackFunction) {
 		ExamType: exam.ExamType,
 		ExamID: uniqueExamID.toString(),
 		CreationTime: serverTimestamp(),
+		ImageURL: exam.ImageURL,
+		UserID: `User/${userData.id}`
 	})
 		.then(function (docRef) {
 			console.log('Document written with ID: ', docRef.id);
-			callbackFunction(true, `${uniqueExamID}`);
+			createExamChat(uniqueExamID)
+				.then((chatDocRef) => {
+					callbackFunction(true, `${uniqueExamID}`);
+				})
+				.catch((err) => {
+					console.log(err.message);
+					const msg = err.message == 'Encountered and error';
+					callbackFunction(false, msg);
+				});
 		})
 		.catch((err) => {
 			console.log(err.message);
@@ -39,7 +53,7 @@ async function createExam(exam, callbackFunction) {
 }
 
 async function getExamBy(inputs) {
-	let getExamByInputQuery = query(
+	const getExamByInputQuery = query(
 		examTableRef,
 		where(inputs.field, '==', inputs.value)
 	);
@@ -52,13 +66,13 @@ async function getExamBy(inputs) {
 			return exams;
 		})
 		.catch((err) => {
-			console.log(err.message);
+			console.log(err);
 			return false;
 		});
 }
 
 async function getExamByID(input, callbackFunction) {
-	let getExamByExamIDQuery = query(
+	const getExamByExamIDQuery = query(
 		examTableRef,
 		where('ExamID', '==', input)
 	);
@@ -70,13 +84,14 @@ async function getExamByID(input, callbackFunction) {
 			});
 			if (exams.length > 0) {
 				// there should be only one exam
+				console.log('Here');
 				callbackFunction(true, exams[0]);
 			} else {
 				callbackFunction(false, 'Exam do not exixts');
 			}
 		})
 		.catch((err) => {
-			console.log(err.message);
+			console.log(err);
 			return false;
 		});
 }

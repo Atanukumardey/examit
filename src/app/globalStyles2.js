@@ -2,7 +2,6 @@ import { createGlobalStyle } from "styled-components";
 
 export const GlobalStyle2 = createGlobalStyle`
 
-
 :root{
     --background: #eff7f9;
     --black:#0a0b10;
@@ -65,6 +64,7 @@ html{
     *:focus {
         outline: none;
     }
+    
     ${""/*img,svg{
         width:100%;
         height:auto;

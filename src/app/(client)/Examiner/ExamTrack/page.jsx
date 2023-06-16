@@ -1,87 +1,101 @@
+// 'use client';
+
 'use client';
 
-import Map from '@/components/Map';
-import styles from './Home.module.scss';
-import MapDataHandler from './MapDataHandler';
+import { Pagination } from '@mui/material';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
-async function page() {
-	const DEFAULT_CENTER = [23.729211164246585, 90.40874895549243];
-	// const[data, setData] = userState({})
-	const data = await MapDataHandler();
-	console.log(data);
-	// useEffect(() => {
-	// 	setData(props.data);
-	// }, []);
+import { db } from '@/server/firebase/firebaseApp';
+import '@fortawesome/fontawesome-free/css/all.min.css';
+import { collection, getDocs, orderBy, query, where } from 'firebase/firestore';
+import { useEffect, useState } from 'react';
+import ExaminerExamCardComponent from './ExamCard';
+
+function ExamsComponent(props) {
+	const [page, setPage] = useState(1);
+	const [totalPage, setTotalPage] = useState(10);
+
+	const [allPubExData, setAllPubExData] = useState([]);
+	const [pubExamDataToShow, setPubExamDataToShow] = useState([]);
+
+	const [initiatePagination, setInitiatePagination] = useState(false);
+	const [snapShotFunctioOff, setSnapShotFunctionOff] = useState();
+
+	const examTableRef = collection(db, 'Exam');
+	const ExamQuery = query(
+		examTableRef,
+		where('ExamType', '==', props.ExamType),
+		where('ExamOrganizer', '==', props.userName),
+		orderBy('Timestamp', 'desc')
+	);
+
+	function handleChange(event, value) {
+		setPage(value);
+		//console.log('FromPagination: ', value);
+		let currentIndex = value * 3;
+		let numberOfItemToShow = 3;
+		let totalItems = allPubExData.length;
+		if (currentIndex > totalItems) {
+			currentIndex = totalItems;
+		}
+		let tempExamData = [];
+		let index = currentIndex - 3;
+		index = index < 0 ? 0 : index;
+		// //console.log('total: ', totalItems);
+		// //console.log('index: ', index);
+		// //console.log('currentIndex: ', currentIndex);
+		for (index = index; index < currentIndex; index++) {
+			tempExamData.push(allPubExData[index]);
+		}
+		// //console.log(allPubExData);
+		//console.log(pubExamDataToShow);
+		setPubExamDataToShow(tempExamData);
+	}
+
+	function getExamsData() {
+		getDocs(ExamQuery).then((snapshot) => {
+			let exams = [];
+			snapshot.docs.forEach((doc) => {
+				exams.push({ ...doc.data(), id: doc.id });
+			});
+			setTotalPage(Math.ceil(exams.length / 3));
+			setAllPubExData(exams);
+			if (!initiatePagination && exams.length > 0) {
+				setInitiatePagination(true);
+			}
+		});
+	}
+
+	useEffect(() => {
+		getExamsData();
+	}, []);
+
+	useEffect(() => {
+		// while(!allPubExData.length>0);
+		handleChange(0, 1);
+	}, [initiatePagination]);
+
 	return (
-		<div className='p-5'>
-			<Map
-				className={styles.homeMap}
-				width='800'
-				height='400'
-				center={DEFAULT_CENTER}
-				zoom={4}
-			>
-				{({ TileLayer, Marker, Popup }) => (
-					<>
-						<TileLayer
-							url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
-							attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-						/>
-
-						{data?.map((item, idx) =>
-							item.location_coordinates.map((pos, id) => (
-								
-								<Marker
-									position={[pos.lat, pos.long]}
-									key={`project_${idx}_marker_${id + 1}`}
-								>
-									{console.log(pos.lat)}
-									<Popup className='w-[400px]'>
-										<div className='w-full space-y-2'>
-											<div className='w-full flex justify-center items-center font-bold text-lg'>
-												Student Details
-											</div>
-											<div className='font-bold text-md w-full flex flex-row'>
-												<div className='w-4/12'>
-													Student Name:
-												</div>
-												<div className='w-9/12'>
-													{item.student_name}
-												</div>
-											</div>
-
-											<div className='font-bold text-md w-full flex flex-row'>
-												<div className='w-3/12'>
-													Student Id:
-												</div>
-												<div className='w-9/12'>
-													{item.student_id}
-												</div>
-											</div>
-
-											<div className='font-bold text-md w-full flex flex-row'>
-												<div className='w-3/12'>
-													Institution:
-												</div>
-												<div className='w-9/12'>
-													{item.Institution}
-												</div>
-											</div>
-										</div>
-									</Popup>
-								</Marker>
-							))
-						)}
-						{/* <Marker position={DEFAULT_CENTER}>
-							<Popup>
-								A pretty CSS3 popup. <br /> Easily customizable.
-							</Popup>
-						</Marker> */}
-					</>
-				)}
-			</Map>
+		<div className='items-center flex flex-col w-full'>
+			<div className='container mt-2 py-2 flex flex-row justify-evenly'>
+				<h1>{props.ExamType} Exams</h1>
+			</div>
+			<div className='space-x-2 container mt-2 py-2 flex flex-row justify-evenly'>
+				{pubExamDataToShow.map((item) => (
+					<ExaminerExamCardComponent examData={item} />
+				))}
+			</div>
+			<Pagination count={totalPage} page={page} onChange={handleChange} />
 		</div>
 	);
 }
 
-export default page;
+export default function ExamTrackPage() {
+	const UserData = JSON.parse(sessionStorage.getItem('UserData'));
+	return (
+		<div className='items-center flex flex-col min-h-[600px]'>
+			<ExamsComponent ExamType={'Private'} userName={UserData.userName} />
+			<ExamsComponent ExamType={'Public'} userName={UserData.userName} />
+		</div>
+	);
+}

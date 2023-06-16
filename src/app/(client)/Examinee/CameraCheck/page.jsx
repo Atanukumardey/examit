@@ -1,48 +1,47 @@
 'use client';
 
 import { Button, Container, TableCell, TableRow } from '@mui/material';
-import { MDBContainer } from 'mdb-react-ui-kit';
+import { MDBContainer, MDBSpinner } from 'mdb-react-ui-kit';
 import { useRouter } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Webcam from 'react-webcam';
 import Examineelayout from '../Examineeayout';
 
-
-
 function ExamineeCameraCheckPageBody() {
-    
-    function fullScreen(elem) {
-        //  Check for browser compatibility
-        const requestFullscreen =
-            elem.requestFullscreen || // Standard API
-            elem.mozRequestFullScreen || // Firefox
-            elem.webkitRequestFullscreen || // Chrome, Safari and Opera
-            elem.msRequestFullscreen; // Internet Explorer
-    
-        if (requestFullscreen) {
-            requestFullscreen.call(elem);
-        }
-    }   
+	function fullScreen(elem) {
+		//  Check for browser compatibility
+		const requestFullscreen =
+			elem.requestFullscreen || // Standard API
+			elem.mozRequestFullScreen || // Firefox
+			elem.webkitRequestFullscreen || // Chrome, Safari and Opera
+			elem.msRequestFullscreen; // Internet Explorer
 
-    
-	const webcamRef = React.useRef(null);
-	const [imgSrc, setImgSrc] = React.useState(null);
-    const [proceedToNextPageButton, setProceedToNextPageButton] = useState(false);
-    const router = useRouter();
+		if (requestFullscreen) {
+			requestFullscreen.call(elem);
+		}
+	}
 
-    const [elem, setElem] = useState(false);
+	const [isLoading, setIsLoading] = useState(false);
+	const webcamRef = useRef(null);
+	const [imgSrc, setImgSrc] = useState(null);
+	const [proceedToNextPageButton, setProceedToNextPageButton] =
+		useState(false);
+	const router = useRouter();
 
- 
+	const [elem, setElem] = useState(null);
 
-    function clickedNext(){
-        fullScreen(elem);
-        router.push('/Examinee/Validation');
-    }
+	function clickedNext(elem, setIsLoading, setProceedToNextPageButton) {
+		setIsLoading(true);
+		setProceedToNextPageButton(false);
+		fullScreen(elem);
+		router.push('/Examinee/testcheck');
+	}
 
 	const capture = React.useCallback(() => {
 		const imageSrc = webcamRef.current.getScreenshot();
+		console.log(imageSrc);
 		setImgSrc(imageSrc);
-        setProceedToNextPageButton(true);
+		setProceedToNextPageButton(true);
 		sessionStorage.setItem('ExamineeImageSrc', imageSrc);
 	}, [webcamRef, setImgSrc]);
 
@@ -52,8 +51,8 @@ function ExamineeCameraCheckPageBody() {
 		}
 	}, []);
 
-    if (document.addEventListener) {
-		document.addEventListener(
+	if (elem?.addEventListener) {
+		elem?.addEventListener(
 			'contextmenu',
 			function (e) {
 				e.preventDefault();
@@ -61,7 +60,7 @@ function ExamineeCameraCheckPageBody() {
 			false
 		);
 	}
-    
+
 	return (
 		<MDBContainer
 			fluid
@@ -109,6 +108,8 @@ function ExamineeCameraCheckPageBody() {
 				{/* </div> */}
 				<div>
 					<Button
+					
+						className = "bg-blue-700"
 						id='validateButtons'
 						variant='contained'
 						onClick={capture}
@@ -118,11 +119,38 @@ function ExamineeCameraCheckPageBody() {
 				</div>
 				<div>
 					{proceedToNextPageButton ? (
-						<Button  className='mt-2' variant='contained'  color='success' onClick={clickedNext}>
+						<Button
+							className='mt-2'
+							
+							className = "bg-green-700"
+							variant='contained'
+							color='success'
+							onClick={() => {
+								clickedNext(
+									elem,
+									setIsLoading,
+									setProceedToNextPageButton
+								);
+							}}
+						>
 							Next
 						</Button>
 					) : (
-						<Button className='mt-2' variant='contained' color='success' disabled>
+						<Button
+						
+							className = "bg-green-700"
+							className='mt-2'
+							variant='contained'
+							color='success'
+							disabled
+						>
+							{isLoading && (
+								<MDBSpinner
+									size='sm'
+									role='status'
+									tag='span'
+								/>
+							)}
 							Next
 						</Button>
 					)}

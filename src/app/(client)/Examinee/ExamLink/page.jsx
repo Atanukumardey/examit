@@ -1,6 +1,11 @@
 'use client';
 import { getExamByID } from '@/server/firebase/ExamTable';
 //import "@fortawesome/fontawesome-free/css/all.min.css";
+import { createExamChat, getExamChatBy } from '@/server/firebase/ExamChat';
+import {
+	createExamStatus,
+	getExamStatusByExamIDuserName,
+} from '@/server/firebase/ExamStatus';
 import { MDBBtn, MDBContainer, MDBInput, MDBSpinner } from 'mdb-react-ui-kit';
 import 'mdb-react-ui-kit/dist/css/mdb.min.css';
 import { useRouter } from 'next/navigation';
@@ -18,6 +23,26 @@ const ContainerUser = styled.div`
 	height: 100vh;
 `;
 
+let ExamineeExamStatus = {
+	ExamID: '',
+	userName: '',
+	Name: '',
+	ExitFullScreen: 0,
+	TabChange: 0,
+	NoOfTimeLookedOut: 0,
+	LeftPlace: 0,
+	OtherPerson: 0,
+	CellPhoneDetected: 0,
+	LaptopDetected: 0,
+	BookDetected: 0,
+	Latitude: 0.0,
+	Longitude: 0.0,
+	FinishedExam: false,
+	Rating: 0,
+	Like: false,
+	ImageURL: '',
+};
+
 function ExamLinkPageBody() {
 	const [submitButtonEnable, setSubmitButtonEnable] = useState(true);
 	const [isLoading, setIsLoading] = useState(false);
@@ -32,9 +57,7 @@ function ExamLinkPageBody() {
 
 	function GetExamCallback(state, message) {
 		if (state === true) {
-			setSubmitButtonEnable(true);
-			setIsLoading(false);
-			let userData = JSON.parse(sessionStorage.getItem('UserData'))[0];
+			let userData = JSON.parse(sessionStorage.getItem('UserData'));
 
 			// if (message.ExamOrganizer == userData.userName) {
 			// 	swal({
@@ -47,15 +70,132 @@ function ExamLinkPageBody() {
 			// 	return;
 			// }
 
-			sessionStorage.setItem('ExamDuration', message.Duration);
-			sessionStorage.setItem('ExamID', message.ExamID);
-			sessionStorage.setItem('ExamName', message.ExamName);
-			sessionStorage.setItem('ExamOrganizer', message.ExamOrganizer);
-			sessionStorage.setItem('ExamGoogleFormLink', message.GFormLink);
-			sessionStorage.setItem('ExamTimeStamp', message.Timestamp);
+			let currentTime = Date.now();
+			let validExamTime =
+				message.Timestamp + message.Duration * 60 * 1000;
 
+			// let DateTimeStamp = Date(validExamTime)
+
+			if (validExamTime <= currentTime) {
+				swal({
+					title: `Time for this exam is over`,
+					icon: 'error',
+					button: 'Ok',
+				});
+				setSubmitButtonEnable(true);
+				setIsLoading(false);
+				return;
+			}
+
+			sessionStorage.setItem(
+				'UserCurrentExamData',
+				JSON.stringify(message)
+			);
+
+			let input = {
+				field: 'ExamID',
+				value: message.ExamID,
+			};
+			getExamChatBy(input).then((examChats) => {
+				if (examChats.length > 0) {
+					sessionStorage.setItem(
+						'ExamChatInfo',
+						JSON.stringify(examChats[0])
+					);
+					getExamStatusByExamIDuserName(
+						message.ExamID,
+						userData.userName
+					).then((examStatus) => {
+						if (examStatus.length < 1) {
+							ExamineeExamStatus.userName = userData.userName;
+							ExamineeExamStatus.ExamID = message.ExamID;
+							ExamineeExamStatus.Name = userData.Name;
+							createExamStatus(ExamineeExamStatus).then(
+								(docref) => {
+									sessionStorage.setItem(
+										'CurrentExamStatusDocRef',
+										docref
+									);
+									sessionStorage.setItem(
+										'ExamineeExamStatus',
+										JSON.stringify(ExamineeExamStatus)
+									);
+									router.push('/Examinee/CameraCheck');
+								}
+							);
+						} else {
+							sessionStorage.setItem(
+								'CurrentExamStatusDocRef',
+								examStatus[0].id
+							);
+							Object.keys(ExamineeExamStatus).forEach((key) => {
+								if (examStatus[0].hasOwnProperty(key)) {
+									ExamineeExamStatus[key] =
+										examStatus[0][key];
+								}
+							});
+							sessionStorage.setItem(
+								'ExamineeExamStatus',
+								JSON.stringify(ExamineeExamStatus)
+							);
+							router.push('/Examinee/CameraCheck');
+						}
+					});
+				} else {
+					createExamChat(message.ExamID).then((examChatID) => {
+						let data = {
+							ExamID: message.ExamID,
+							id: examChatID,
+						};
+						sessionStorage.setItem(
+							'ExamChatInfo',
+							JSON.stringify(data)
+						);
+						getExamStatusByExamIDuserName(
+							message.ExamID,
+							userData.userName
+						).then((examStatus) => {
+							if (examStatus.length < 1) {
+								ExamineeExamStatus.userName = userData.userName;
+								ExamineeExamStatus.ExamID = message.ExamID;
+								ExamineeExamStatus.Name = userData.Name;
+								createExamStatus(ExamineeExamStatus).then(
+									(docref) => {
+										sessionStorage.setItem(
+											'CurrentExamStatusDocRef',
+											docref
+										);
+										sessionStorage.setItem(
+											'ExamineeExamStatus',
+											JSON.stringify(ExamineeExamStatus)
+										);
+										router.push('/Examinee/CameraCheck');
+									}
+								);
+							} else {
+								sessionStorage.setItem(
+									'CurrentExamStatusDocRef',
+									examStatus[0].id
+								);
+								Object.keys(ExamineeExamStatus).forEach(
+									(key) => {
+										if (examStatus[0].hasOwnProperty(key)) {
+											ExamineeExamStatus[key] =
+												examStatus[0][key];
+										}
+									}
+								);
+								sessionStorage.setItem(
+									'ExamineeExamStatus',
+									JSON.stringify(ExamineeExamStatus)
+								);
+								router.push('/Examinee/CameraCheck');
+							}
+						});
+					});
+				}
+			});
 			// setsessionstorage
-			router.push('/Examinee/CameraCheck');
 		} else {
 			swal({
 				title: 'Exam Do not exists',

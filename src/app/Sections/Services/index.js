@@ -340,7 +340,7 @@ const Services = () => {
           <Image src={Tube} alt="Tube Object" width="400" height="400" />
         </OBJ>
         {/* <SvgBlock svg="Design.svg" /> */}
-        <SvgBlock svg="ImageAsset/EffectiveExam.svg" />
+        <SvgBlock svg="ImageAsset/EffectiveExamNew.svg" />
       </Content>
       <Content ref={addToRefs}>
         <TextBlock

@@ -4,8 +4,8 @@ import styled from 'styled-components';
 
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';
-import ScrollToTop from '@/components/ScrollToTop';
 import { MDBSpinner } from 'mdb-react-ui-kit';
+import { useRouter } from 'next/navigation';
 import { Suspense } from 'react';
 import { GlobalStyle2 } from '../../globalStyles2';
 
@@ -56,30 +56,38 @@ const menus = [
 ];
 
 // const [clientLayoutNeedHeader,setClientLayoutNeedHeader] = useState(true);
-export default function Examineelayout({children, LayoutNeedHeader}) {
-	console.log(LayoutNeedHeader);
+export default function Examineelayout({ children, LayoutNeedHeader }) {
+	// console.log(LayoutNeedHeader);
+	const router = useRouter();
+	const layoutuserData = JSON.parse(sessionStorage.getItem('UserData'));
+
+	if (layoutuserData == null || !layoutuserData.userName) {
+		router.push('/Authentication');
+	}
 	return (
-		<Suspense
-			fallback={
-				<div className=' w-screen h-screen flex flex-col justify-items-center'>
-					<MDBSpinner
-						className=''
-						style={{ width: '3rem', height: '3rem' }}
-						role='status'
-					>
-						{/* <span>Loading...</span> */}
-					</MDBSpinner>
-				</div>
-			}
-		>
+		<>
 			{<GlobalStyle2 />}
-			<ScrollToTop />
+			{/* <ScrollToTop /> */}
 
 			{LayoutNeedHeader && <Header menus={menus} />}
-			{/* <ContainerUser> */}
-			{children}
-			{/* </ContainerUser> */}
+			<Suspense
+				fallback={
+					<div className=' w-screen h-screen flex flex-col justify-center align-middle'>
+						<MDBSpinner
+							className=''
+							style={{ width: '3rem', height: '3rem' }}
+							role='status'
+						>
+							{/* <span>Loading...</span> */}
+						</MDBSpinner>
+					</div>
+				}
+			>
+				{/* <ContainerUser> */}
+				{children}
+				{/* </ContainerUser> */}
+			</Suspense>
 			{LayoutNeedHeader && <Footer />}
-		</Suspense>
+		</>
 	);
 }
