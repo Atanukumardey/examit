@@ -13,10 +13,11 @@ import {
 	where,
 } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
+import Examineelayout from '../Examineeayout';
 import CommentComponent from './CommentSection';
 import ExamCardComponent from './ExamCardComponent';
 
-export default function AllExamPage(props) {
+function AllExamPageBody(props) {
 	const [page, setPage] = useState(1);
 	const [totalPage, setTotalPage] = useState(10);
 	const [allPubExData, setAllPubExData] = useState([]);
@@ -33,7 +34,7 @@ export default function AllExamPage(props) {
 
 	function handleChange(event, value) {
 		setPage(value);
-    console.log("FromPagination: ",value)
+		console.log('FromPagination: ', value);
 		let currentIndex = value * 3;
 		let numberOfItemToShow = 3;
 		let totalItems = allPubExData.length;
@@ -76,10 +77,10 @@ export default function AllExamPage(props) {
 		listenPublicExams();
 	}, []);
 
-  useEffect(()=>{
-    // while(!allPubExData.length>0);
-    handleChange(0,1);
-  },[initiatePagination])
+	useEffect(() => {
+		// while(!allPubExData.length>0);
+		handleChange(0, 1);
+	}, [initiatePagination]);
 
 	useEffect(() => {
 		console.log('Comment Component: ', commentComponentDocRef);
@@ -99,7 +100,12 @@ export default function AllExamPage(props) {
 					/>
 				))}
 			</div>
-			<Pagination className='mt-3 mb-3' count={totalPage} page={page} onChange={handleChange} />
+			<Pagination
+				className='mt-3 mb-3'
+				count={totalPage}
+				page={page}
+				onChange={handleChange}
+			/>
 			<div className='w-full'>
 				{toggleCommentView && (
 					<CommentComponent docRef={commentComponentDocRef} />
@@ -109,5 +115,14 @@ export default function AllExamPage(props) {
 				)}
 			</div>
 		</div>
+	);
+}
+
+export default function AllExamPage() {
+	return (
+		<Examineelayout
+			children={<AllExamPageBody />}
+			LayoutNeedHeader={true}
+		/>
 	);
 }

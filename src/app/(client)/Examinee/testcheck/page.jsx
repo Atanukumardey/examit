@@ -86,7 +86,7 @@ function validateSystemCheck(netSpeed, setProceedButtonVisible) {
 	// Network Check
 	// var netSpeedVar = sessionStorage.getItem('netspeed');
 
-	if (netSpeed > 2) {
+	if (netSpeed > 0) {
 		isAllowed = true;
 	} else {
 		swal('Low Internet Speed');

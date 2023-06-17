@@ -43,7 +43,7 @@ let numberOfOccurance = 0;
 function finishExam(router) {
 	ExamineeExamStatus.finishedExam = true;
 
-	updateExamStatus(CurrentExamExamStatusDocRef, ExamineeExamStatus);
+	// updateExamStatus(CurrentExamExamStatusDocRef, ExamineeExamStatus);
 	numberOfOccurance = 0;
 
 	console.log('Exam Finished');
@@ -144,7 +144,6 @@ async function DetectionWindow() {
 				'Action has been Recorded',
 				'error'
 			);
-			swal('You looked away from the Screen (To the Left)');
 		}
 	};
 
@@ -276,7 +275,7 @@ async function DetectionWindow() {
 	// }, [changedFormState]);
 
 	useEffect(() => {
-		// runDetection();
+		 runDetection();
 	}, []);
 
 	return (

@@ -13,6 +13,7 @@ import ScrollToTop from '@/components/ScrollToTop';
 import { useRouter } from 'next/navigation';
 import { Suspense } from 'react';
 
+
 const Container = styled.div`
 	display: flex;
 	flex-direction: column;

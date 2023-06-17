@@ -405,6 +405,13 @@ export default function ExamCardComponent(props) {
 					handleExamAttenButtonClick();
 				}}
 				color='success'
+				// style={{
+				// 	textAlign: 'center',
+				// 	padding: '0.75rem',
+				// 	backgroundColor: 'slate',
+				// 	color: 'cyan',
+				// 	fontWeight: 'bold',
+				// }}
 				className=' text-center p-3 bg-slate-500 text-cyan-50 font-bold'
 			>
 				{isLoading && <MDBSpinner size='sm' role='status' tag='span' />}

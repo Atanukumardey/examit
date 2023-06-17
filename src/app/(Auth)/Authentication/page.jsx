@@ -7,6 +7,7 @@ import facebookIcon from '/public/ImageAsset/facebooksvgrepocom.svg';
 import googleIcon from '/public/ImageAsset/googlesvgrepocom.svg';
 //import '../../globals.css';
 
+import styles from './authentication.module.scss';
 // import Gmail from "/public/landingpage/envelope-open-solid.svg";
 // import Instagram from "/public/landingpage/instagram-square-brands.svg";
 
@@ -290,7 +291,9 @@ function LoginSignup() {
 
 	return (
 		<MDBContainer
-		 className='p-3 my-5 d-flex flex-column w-50'>
+			// className='p-3 my-5 d-flex flex-column w-50'+{styles.mainContainerbg}
+			className={styles.mainContainerbg}
+		>
 			<MDBTabs
 				pills
 				justify

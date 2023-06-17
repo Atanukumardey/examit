@@ -3,10 +3,12 @@
 import ExpandableComponent from '@/components/Expandable';
 import Map from '@/components/Map';
 import { getExamStatusBy } from '@/server/firebase/ExamStatus';
+import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import ChatWindow from '../../chatwindow';
 import ExamTrackTable from './DataTable';
 import styles from './Home.module.scss';
+import popupImage from '/public/ImageAsset/ExamItLogo.png';
 
 let ExamineeExamStatus = {
 	ExamID: '',
@@ -55,54 +57,66 @@ function MapComponent(props) {
 							key={`project_${idx}_marker_${idx + 1}`}
 						>
 							<Popup className='w-[500px]'>
-								<div className='w-full space-y-2'>
+								<div className='w-[450px] space-y-2'>
 									<div className='w-full flex justify-center items-center font-bold text-lg'>
 										Examinee Details
 									</div>
-									<div className='font-bold text-md w-full flex flex-row'>
-										<div className='w-auto'>
-											Examinee Name:{' '}
-										</div>
-										<div className='w-auto'>
-											{details.Name}
-										</div>
-									</div>
+									<div className='w-full h-full flex flex-row items-center justify-center'>
+										<div className='w-1/2 h-full flex flex-col justify-between'>
+											<div className='font-bold text-md w-full flex flex-row'>
+												<div className='w-auto'>
+													Examinee Name:{' '}
+												</div>
+												<div className='w-auto'>
+													{details.Name}
+												</div>
+											</div>
 
-									<div className='font-bold text-md w-full flex flex-row'>
-										<div className='w-auto'>
-											Finished Exam:
-										</div>
-										<div className='w-auto'>
-											{details.FinishedExam
-												? ' YES'
-												: ' NO'}
-										</div>
-									</div>
+											<div className='font-bold text-md w-full flex flex-row'>
+												<div className='w-auto'>
+													Finished Exam:
+												</div>
+												<div className='w-auto'>
+													{details.FinishedExam
+														? ' YES'
+														: ' NO'}
+												</div>
+											</div>
 
-									<div className='font-bold text-md w-full flex flex-row'>
-										<div className='auto'>
-											Number of Times Looked Out:{' '}
-										</div>
-										<div className='auto'>
-											{details.NoOfTimeLookedOut}
-										</div>
-									</div>
+											<div className='font-bold text-md w-full flex flex-row'>
+												<div className='auto'>
+													Number of Times Looked Out:{' '}
+												</div>
+												<div className='auto'>
+													{details.NoOfTimeLookedOut}
+												</div>
+											</div>
 
-									<div className='font-bold text-md w-full flex flex-row'>
-										<div className='auto'>
-											Other Person Detected:{' '}
-										</div>
-										<div className='auto'>
-											{details.OtherPerson}
-										</div>
-									</div>
+											<div className='font-bold text-md w-full flex flex-row'>
+												<div className='auto'>
+													Other Person Detected:{' '}
+												</div>
+												<div className='auto'>
+													{details.OtherPerson}
+												</div>
+											</div>
 
-									<div className='font-bold text-md w-full flex flex-row'>
-										<div className='auto'>
-											Exited The Exam Window:{' '}
+											<div className='font-bold text-md w-full flex flex-row'>
+												<div className='auto'>
+													Exited The Exam Window:{' '}
+												</div>
+												<div className='auto'>
+													{details.ExitFullScreen}
+												</div>
+											</div>
 										</div>
-										<div className='auto'>
-											{details.ExitFullScreen}
+										<div className='w-1/2 h-full flex justify-center items-center'>
+											<Image
+											src={popupImage}
+											width={200}
+											height={150}
+											
+											/>
 										</div>
 									</div>
 								</div>

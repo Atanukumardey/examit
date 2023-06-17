@@ -64,13 +64,9 @@ function ExamineeCameraCheckPageBody() {
 	return (
 		<MDBContainer
 			fluid
-			style={{
-				height: '90%',
-				width: 'auto',
-				background: '',
-			}}
+			className='w-full h-full min-h-[600px]'
 		>
-			<center>
+			<center className='min-h-[800px]'>
 				{/* <div className='shadow-lg w-25 p-1 mt-5 mb-5 bg-body rounded'> */}
 				<div className='shadow-lg p-0 mt-2 w-auto rounded'>
 					<h1 className='fs-2'>Instructions to Follow</h1>

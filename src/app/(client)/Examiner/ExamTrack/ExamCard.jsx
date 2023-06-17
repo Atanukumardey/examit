@@ -1,12 +1,11 @@
 'use client';
 import Avatar from '@mui/material/Avatar';
 import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
 import Typography from '@mui/material/Typography';
 
-import { Button } from '@mui/material';
+import { CardActionArea, CardMedia } from '@mui/material';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import exampleImage from '/public/ImageAsset/ExamItLogo.png';
 
@@ -124,7 +123,7 @@ export default function ExaminerExamCardComponent(props) {
 	});
 
 	return (
-		<Card sx={{ maxWidth: 345 }}  className='shadow-lg'>
+		<Card className='shadow-lg bg-gray-300 rounded-md'>
 			<CardHeader
 				avatar={
 					<Avatar aria-label='recipe'>
@@ -134,31 +133,36 @@ export default function ExaminerExamCardComponent(props) {
 				title={'Organizer: ' + props.examData.ExamOrganizer}
 				subheader={'Exam Date: ' + dateTime.date}
 			/>
+
+			<CardMedia
+				component='img'
+				height='150'
+				image={exampleImage.src}
+				alt='image'
+			/>
 			<CardContent>
 				<Typography gutterBottom variant='h5' component='div'>
 					{props.examData.ExamName}
 				</Typography>
-				<Typography gutterBottom variant='p' component='div'>
-                    Exam Time: {dateTime.time}
+				<Typography gutterBottom variant='h7' component='div'>
+					Exam Time: {dateTime.time}
 				</Typography>
-				<Typography gutterBottom variant='p' component='div'>
-                Exam Status: {examRunningState}
+				<Typography gutterBottom variant='h7' component='div'>
+					Exam Status: {examRunningState}
 				</Typography>
-				<Typography gutterBottom variant='p' component='div'>
-                Exam Code: {props.examData.ExamID}
+				<Typography gutterBottom variant='h7' component='div'>
+					Exam Code: {props.examData.ExamID}
 				</Typography>
 			</CardContent>
-			<CardActions disableSpacing>
-				<Button
-					className='ms-5'
-					color='success'
-					onClick={() => {
-						handleTrackExamClick();
-					}}
-				>
-					Track The Exam
-				</Button>
-			</CardActions>
+			<CardActionArea
+				className='text-center p-3 bg-slate-500 text-cyan-50 font-bold'
+				color='success'
+				onClick={() => {
+					handleTrackExamClick();
+				}}
+			>
+				Track The Exam
+			</CardActionArea>
 		</Card>
 	);
 }
