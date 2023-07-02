@@ -216,8 +216,8 @@ function ExamineeSystemCheckPageBody() {
 		if (document) {
 			setElem(document.documentElement); // Get the document element (HTML element)
 		}
-		validateSystemCheck(netSpeed, setProceedButtonVisible);
 		getLocation();
+		validateSystemCheck(netSpeed, setProceedButtonVisible);
 	}, [netSpeed, setCameraPermission, netSpeed]);
 
 	getNetworkDownloadSpeed()

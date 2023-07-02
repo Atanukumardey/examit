@@ -339,7 +339,7 @@ export default function ExamCardComponent(props) {
 	}
 
 	return (
-		<Card className='shadow-lg bg-gray-300 rounded-md'>
+		<Card  sx={{ maxWidth: 345 }} className='shadow-lg bg-gray-300 rounded-md'>
 			<CardHeader
 				avatar={
 					<Avatar aria-label='recipe'>
@@ -349,12 +349,33 @@ export default function ExamCardComponent(props) {
 				title={'Organizer: ' + props.examData.ExamOrganizer}
 				subheader={'Exam Date: ' + dateTime.date}
 			/>
-			<CardMedia
-				component='img'
-				height='150'
-				image={exampleImage.src}
-				alt='image'
-			/>
+			{props.examData.ImageURL != null ? (
+				props.examData.ImageURL != '' ? (
+					<CardMedia
+						component='img'
+						height='200'
+						image={props.examData.ImageURL}
+						alt='image'
+						sx={{ maxHeight: 200 }}
+					/>
+				) : (
+					<CardMedia
+						component='img'
+						height='200'
+						image={exampleImage.src}
+						alt='image'
+						sx={{ maxHeight: 200 }}
+					/>
+				)
+			) : (
+				<CardMedia
+					component='img'
+					height='200'
+					image={exampleImage.src}
+					alt='image'
+					sx={{ maxHeight: 200 }}
+				/>
+			)}
 			<CardContent>
 				<Typography gutterBottom variant='h5' component='div'>
 					{props.examData.ExamName}

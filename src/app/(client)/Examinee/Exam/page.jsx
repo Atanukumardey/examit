@@ -43,7 +43,7 @@ let numberOfOccurance = 0;
 function finishExam(router) {
 	ExamineeExamStatus.finishedExam = true;
 
-	// updateExamStatus(CurrentExamExamStatusDocRef, ExamineeExamStatus);
+	updateExamStatus(CurrentExamExamStatusDocRef, ExamineeExamStatus);
 	numberOfOccurance = 0;
 
 	console.log('Exam Finished');
@@ -56,6 +56,23 @@ function finishExam(router) {
 	// sessionStorage.removeItem('UserCurrentExamData');
 
 	swal('Thanks Fot Attending the Exam', 'success');
+	document.removeEventListener(
+		'fullscreenchange',
+		handleFullScreenChange,
+		false
+	);
+	document.removeEventListener(
+		'contextmenu',
+		function (e) {
+			e.preventDefault();
+		},
+		false
+	);
+	document.removeEventListener(
+		'visibilitychange',
+		handleVisibilityChange,
+		false
+	);
 	router.push('/User/Home');
 }
 
@@ -275,7 +292,7 @@ async function DetectionWindow() {
 	// }, [changedFormState]);
 
 	useEffect(() => {
-		 runDetection();
+		runDetection();
 	}, []);
 
 	return (
@@ -359,57 +376,85 @@ function ExamPageBody() {
 
 	// console.log(ExamineeExamStatus, CurrentExamExamStatusDocRef, UserData);
 
-	const [elem, setElem] = useState(null);
+	// const [document, setElem] = useState(null);
 
 	function handleVisibilityChange() {
 		if (document.hidden) {
 			ExamineeExamStatus.TabChange += 1;
-			handleExamineeExamStatusChange(false);
+			handleExamineeExamStatusChange(true);
 			swal('Changed Tab Detected', 'Action has been Recorded', 'error');
 			// the page is hidden
 		}
-		//if(document.)
 	}
 
-	// if (!elem?.fullscreenElement) {
+	function handleFullScreenChange() {
+		if (!document.fullscreenElement) {
+			swal('Exit Full Screen', 'Action has been Recorded', 'error');
+			ExamineeExamStatus.ExitFullScreen += 1;
+			handleExamineeExamStatusChange(true);
+			router.push('/Examinee/Warning');
+		}
+	}
+
+	// if (!document?.fullscreenElement) {
 	// 	// ExamineeExamStatus.ExitFullScreen += 1;
 	// 	// handleExamineeExamStatusChange(true);
 	// 	// router.push('/Examinee/Warning');
 	// 	console.log('Here 1');
 	// }
 
-	document.addEventListener('fullscreenchange', (event) => {
-		if (!document.fullscreenElement) {
-			// ExamineeExamStatus.ExitFullScreen += 1;
-			// handleExamineeExamStatusChange(true);
-			// router.push('/Examinee/Warning');
-			console.log('Here 2');
+	if (document != null) {
+		if (
+			document.fullscreenElement /* Standard syntax */ ||
+			document.webkitFullscreenElement /* Safari and Opera syntax */ ||
+			document.msFullscreenElement /* IE11 syntax */
+		) {
+			console.log('Full Screen');
+		} else {
+			// console.log('Here 1');
+			ExamineeExamStatus.ExitFullScreen += 1;
+			handleExamineeExamStatusChange(true);
+			router.push('/Examinee/Warning');
 		}
-	});
-	document.addEventListener(
-		'contextmenu',
-		function (e) {
-			e.preventDefault();
-		},
-		false
-	);
-
-	document.addEventListener(
-		'visibilitychange',
-		handleVisibilityChange,
-		false
-	);
-
-	if (document.fullscreenElement) {
-		console.log("Full Screen")
-	} else {
-		console.log('Here 1');
 	}
 
 	useEffect(() => {
-		if (document) {
-			setElem(document.documentElement); // Get the document element (HTML element)
-		}
+		document.addEventListener(
+			'fullscreenchange',
+			handleFullScreenChange,
+			false
+		);
+		document.addEventListener(
+			'contextmenu',
+			function (e) {
+				e.preventDefault();
+			},
+			false
+		);
+		document.addEventListener(
+			'visibilitychange',
+			handleVisibilityChange,
+			false
+		);
+		return () => {
+			document.removeEventListener(
+				'fullscreenchange',
+				handleFullScreenChange,
+				false
+			);
+			document.removeEventListener(
+				'contextmenu',
+				function (e) {
+					e.preventDefault();
+				},
+				false
+			);
+			document.removeEventListener(
+				'visibilitychange',
+				handleVisibilityChange,
+				false
+			);
+		};
 		getLocation();
 	}, []);
 

@@ -9,6 +9,27 @@ import { useRouter } from 'next/navigation';
 import { Suspense } from 'react';
 import { GlobalStyle2 } from '../../globalStyles2';
 
+// import pageBackgroundImage from '/public/ImageAsset/science-doodle-pattern2_blur.jpg';
+// import pageBackgroundImage from '/public/ImageAsset/BackgepundImage2.jpg';
+import { userSignOut } from '@/server/firebase/Authentication';
+import pageBackgroundImage from '/public/ImageAsset/seamless-pattern-doodles-business-theme_2.jpg';
+
+
+// display: flex;
+// flex-direction: column;
+// justify-content: center;
+// align-items: center;
+// position: relative;
+// padding: 0.75rem;
+
+const ContainerUser = styled.div`
+	background-image: url(${pageBackgroundImage.src});
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+	text-color: white;
+`;
+
 const loadingContainer = styled.div`
 	width: 100%;
 	height: 100vh;
@@ -23,35 +44,36 @@ const loadingContainer = styled.div`
 const menus = [
 	{
 		id: '1',
-		link: '/User/home',
-		elementID: 'UserHome',
+		link: '/User/Home',
+		elementID: null,
 		menuName: 'Home',
 		isButton: false,
 		Buttontext: '',
 	},
 	{
 		id: '2',
-		link: '/User/profile',
-		elementID: 'UserProfile',
+		link: '/User/Profile',
+		elementID: null,
 		menuName: 'Profile',
 		isButton: false,
 		Buttontext: '',
 	},
 	{
 		id: '3',
-		link: '/User/help',
-		elementID: 'UserHelp',
+		link: '/User/Help',
+		elementID: null,
 		menuName: 'Help',
 		isButton: false,
 		Buttontext: '',
 	},
 	{
 		id: '4',
-		link: '/',
+		link: '/Authentication/logout',
 		elementID: null,
 		menuName: 'Logout',
 		isButton: true,
 		Buttontext: 'Logout',
+		ButtonClick: userSignOut
 	},
 ];
 
@@ -83,10 +105,10 @@ export default function Examineelayout({ children, LayoutNeedHeader }) {
 					</div>
 				}
 			>
-				{/* <ContainerUser> */}
+				<ContainerUser>
 				
 				{children}
-				{/* </ContainerUser> */}
+				</ContainerUser>
 			</Suspense>
 			{LayoutNeedHeader && <Footer />}
 		</>

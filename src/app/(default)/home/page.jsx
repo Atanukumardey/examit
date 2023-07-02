@@ -13,7 +13,6 @@ import ScrollToTop from '@/components/ScrollToTop';
 import { useRouter } from 'next/navigation';
 import { Suspense } from 'react';
 
-
 const Container = styled.div`
 	display: flex;
 	flex-direction: column;
@@ -21,6 +20,10 @@ const Container = styled.div`
 	align-items: center;
 	/* position: relative; */
 `;
+
+function dummy() {
+	console.log('dummy');
+}
 
 const menus = [
 	{
@@ -54,16 +57,23 @@ const menus = [
 		menuName: 'Contact',
 		isButton: true,
 		Buttontext: 'Contact Us',
+		ButtonClick: dummy,
 	},
 ];
 
 function Home() {
 	const router = useRouter();
-	const isLoggedin = localStorage.getItem('ExamITUserInfo');
-	if (isLoggedin != null) {
-		sessionStorage.setItem('UserData', isLoggedin);
-		router.push('/User/Home');
+	const ll = sessionStorage.getItem('Logout');
+	if (ll!=null && ll != 'true') {
+		const isLoggedin = localStorage.getItem('ExamITUserInfo');
+		if (isLoggedin != null) {
+			sessionStorage.setItem('UserData', isLoggedin);
+			router.push('/User/Home');
+		}
+	} else {
+		sessionStorage.removeItem('Logout');
 	}
+
 	return (
 		<Suspense fallback={<div> Loading..... </div>}>
 			<GlobalStyle />

@@ -9,6 +9,24 @@ import { MDBSpinner } from 'mdb-react-ui-kit';
 import { Suspense } from 'react';
 import { GlobalStyle2 } from '../../globalStyles2';
 
+import { userSignOut } from '@/server/firebase/Authentication';
+import pageBackgroundImage from '/public/ImageAsset/science-doodle-pattern2_blur.jpg';
+
+// display: flex;
+// flex-direction: column;
+// justify-content: center;
+// align-items: center;
+// position: relative;
+// padding: 0.75rem;
+
+const ContainerUser = styled.div`
+	background-image: url(${pageBackgroundImage.src});
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+	text-color: white;
+`;
+
 const loadingContainer = styled.div`
 	width: 100%;
 	height: 100vh;
@@ -52,12 +70,12 @@ const menus = [
 		menuName: 'Logout',
 		isButton: true,
 		Buttontext: 'Logout',
+		ButtonClick: userSignOut
 	},
 ];
 
 // const [clientLayoutNeedHeader,setClientLayoutNeedHeader] = useState(true);
 export default function Userlayout({ children }) {
-	
 	return (
 		<Suspense
 			fallback={
@@ -75,11 +93,9 @@ export default function Userlayout({ children }) {
 			{<GlobalStyle2 />}
 			<ScrollToTop />
 
-			 <Header menus={menus} />
-			{/* <ContainerUser> */}
-			{children}
-			{/* </ContainerUser> */}
-			 <Footer />
+			<Header menus={menus} />
+			<ContainerUser>{children}</ContainerUser>
+			<Footer />
 		</Suspense>
 	);
 }

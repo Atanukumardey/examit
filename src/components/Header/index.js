@@ -264,7 +264,11 @@ const Header = (props) => {
 						href={menu.link}
 						onClick={(e) => scrollUp(menu.elementID, e)}
 					>
-						{menu.isButton? <Button>{menu.Buttontext}</Button>: menu.menuName}
+						{menu.isButton ? (
+							<Button>{menu.Buttontext}</Button>
+						) : (
+							menu.menuName
+						)}
 					</a>
 				))}
 			</Nav>
@@ -278,7 +282,15 @@ const Header = (props) => {
 						href={menu.link}
 						onClick={(e) => scrollUp(menu.elementID, e)}
 					>
-						{menu.isButton? <Button>{menu.Buttontext}</Button>: menu.menuName}
+						{menu.isButton ? (
+							<Button
+							onClick={()=>{
+								menu.ButtonClick();
+							}}
+							>{menu.Buttontext}</Button>
+						) : (
+							menu.menuName
+						)}
 					</a>
 				))}
 			</MobileMenu>

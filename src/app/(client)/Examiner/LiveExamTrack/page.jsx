@@ -112,10 +112,15 @@ function MapComponent(props) {
 										</div>
 										<div className='w-1/2 h-full flex justify-center items-center'>
 											<Image
-											src={popupImage}
-											width={200}
-											height={150}
-											
+												src={
+													details.ImageURL != null
+														? details.ImageURL != ''
+															? details.ImageURL
+															: popupImage
+														: popupImage
+												}
+												width={200}
+												height={150}
 											/>
 										</div>
 									</div>

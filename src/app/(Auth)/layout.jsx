@@ -15,11 +15,11 @@ const Containers = styled.div`
 	align-items: center;
 	position: relative;
 	padding: 0.75rem;
-  background-image: url(${pageBackgroundImage.src});
+	background-image: url(${pageBackgroundImage.src});
 	background-position: center;
 	background-repeat: no-repeat;
 	background-size: cover;
-  text-color:white;
+	text-color: white;
 `;
 
 // background-image: url(${pageBackgroundImage.src});

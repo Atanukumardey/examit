@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';
 import ScrollToTop from '@/components/ScrollToTop';
+import { userSignOut } from '@/server/firebase/Authentication';
 import { MDBSpinner } from 'mdb-react-ui-kit';
 import { Suspense } from 'react';
 import { GlobalStyle2 } from '../../globalStyles2';
@@ -47,11 +48,12 @@ const menus = [
 	},
 	{
 		id: '4',
-		link: '/',
+		link: '/Authentication/logout',
 		elementID: null,
 		menuName: 'Logout',
 		isButton: true,
 		Buttontext: 'Logout',
+		ButtonClick: userSignOut
 	},
 ];
 

@@ -46,6 +46,7 @@ function LoginSignup() {
 	const [submitButtonEnable, setSubmitButtonEnable] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
 	const [selectedRememberMe, setSelectedRememberMe] = useState(false);
+	const [selectedRememberMe2, setSelectedRememberMe2] = useState(false);
 
 	const [formInputValidityLabel, setFormInputValidityLabel] = useState({
 		userNameUniqueLabel: 'Username',
@@ -64,6 +65,16 @@ function LoginSignup() {
 		cpassword: '',
 		imageURL: '',
 	});
+
+	function handleCheckboxChange(event) {
+		setSelectedRememberMe(event.target.checked);
+		console.log(selectedRememberMe)
+	}
+
+	function handleCheckboxChange2(event) {
+		console.log('here');
+		setSelectedRememberMe2(event.target.checked);
+	}
 
 	function decideSubmitButtonState() {
 		setSubmitButtonEnable(false);
@@ -222,6 +233,7 @@ function LoginSignup() {
 		console.log(message);
 		if (state === true) {
 			if (selectedRememberMe) {
+				console.log('Saved');
 				const userInitialData = sessionStorage.getItem('UserData');
 				localStorage.setItem('ExamITUserInfo', userInitialData);
 			}
@@ -465,6 +477,8 @@ function LoginSignup() {
 						</MDBValidationItem>
 						<div className='d-flex justify-content-between mx-4 mb-4'>
 							<MDBCheckbox
+								checked={selectedRememberMe}
+								onChange={handleCheckboxChange}
 								name='registerCheckbox'
 								value=''
 								id='registerCheckBox'
@@ -706,13 +720,11 @@ function LoginSignup() {
 
 						<div className='d-flex justify-content-center mb-4'>
 							<MDBCheckbox
-								value={selectedRememberMe}
+								checked={selectedRememberMe2}
 								name='loginCheckbox'
 								id='loginCheckBox'
 								label='I have read and agree to the terms'
-								onChange={() => {
-									setSelectedRememberMe(!selectedRememberMe);
-								}}
+								onChange={handleCheckboxChange2}
 							/>
 						</div>
 						{submitButtonEnable ? (

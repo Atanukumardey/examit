@@ -7,23 +7,39 @@ const getFileExtension = (filename) => {
 
 function generateRandomString(length) {
 	let result = '';
-	const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+	const characters =
+		'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 	const charactersLength = characters.length;
-  
+
 	for (let i = 0; i < length; i++) {
-	  result += characters.charAt(Math.floor(Math.random() * charactersLength));
+		result += characters.charAt(
+			Math.floor(Math.random() * charactersLength)
+		);
 	}
-  
+
 	return result;
-  }
+}
 
 async function uploadImage(baseURL, file) {
-	const imageId = Date.now().toString()+ generateRandomString(10);
+	const imageId = Date.now().toString() + generateRandomString(10);
 	// Retrieve the file extension from the selected image
 	const fileExtension = getFileExtension(file.name);
 	const storageRef = ref(storage, `${baseURL}/${imageId}.${fileExtension}`);
 	console.log(file);
 	return await uploadBytes(storageRef, file)
+		.then((snapshot) => {
+			return storageRef;
+		})
+		.catch((err) => {
+			console.log(err.message);
+		});
+}
+
+async function uploadBolb(baseURL, imageBolb) {
+	const imageId = Date.now().toString() + generateRandomString(10);
+	// Retrieve the file extension from the selected image
+	const storageRef = ref(storage, `${baseURL}/${imageId}.jpg`);
+	return await uploadBytes(storageRef, imageBolb)
 		.then((snapshot) => {
 			return storageRef;
 		})
@@ -43,5 +59,5 @@ async function getFileURLByRef(storageRef) {
 		});
 }
 
-export { getFileURLByRef, uploadImage };
+export { getFileURLByRef, uploadBolb, uploadImage };
 
